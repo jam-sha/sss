@@ -1,24 +1,62 @@
-import { useState } from "react";
-import viteLogo from "/vite.svg";
 import "./App.css";
+import { useState, useRef, useEffect } from "react";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const songs = [
+    { path: "/pt.mp3", title: "Paris, Texas" },
+    { path: "/cn.mp3", title: "Candy Necklace" },
+  ];
+
+  const audioRefs = useRef(new Map());
+  const [playing, setPlaying] = useState(false);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState("");
+
+  useEffect(() => {
+    songs.forEach((song) => {
+      const audio = new Audio(song.path);
+
+      audio.addEventListener("ended", () => {
+        setPlaying(false);
+      });
+
+      audioRefs.current.set(song.path, audio);
+    });
+  }, []);
+
+  const changeSong = async (songPath: string) => {
+    if (currentlyPlaying === songPath) {
+      const currentAudio = audioRefs.current.get(songPath);
+      if (!playing) {
+        currentAudio.play();
+        setPlaying(true);
+      } else {
+        currentAudio.pause();
+        setPlaying(false);
+      }
+    } else {
+      if (currentlyPlaying) {
+        audioRefs.current.get(currentlyPlaying).pause();
+        audioRefs.current.get(currentlyPlaying).currentTime = 0;
+      }
+      const newSong = audioRefs.current.get(songPath);
+      setCurrentlyPlaying(songPath);
+      newSong.play();
+      setPlaying(true);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
+    <div>
+      <div className="main">
+        {songs.map((song) => (
+          <button onClick={() => changeSong(song.path)}>
+            {currentlyPlaying === song.path && playing
+              ? `Pause ${song.title}`
+              : `Play ${song.title}`}
+          </button>
+        ))}
       </div>
-      <h1>Simple Streaming Service</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-    </>
+    </div>
   );
 }
 
