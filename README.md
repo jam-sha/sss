@@ -1,53 +1,29 @@
-# React + TypeScript + Vite
+# Simple Streaming Service
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Website where users can listen to audio files. For now, files are hosted locally.
 
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Project is still in progress.
+
+Planned features:
+- Ability to queue up songs
+- Autoplay next song in queue when current song ends, remove current song from queue
+- Automatically create queue via shuffling song list or sequentially
+- Seeking for songs which is the ability to jump to any timestamp of a file through clicking/tapping a progress bar
+- Host files remotely with S3 and CloudFront
+- Buffered playback from S3/CloudFront instead of having to download entire file
+- Adaptive bitrate streaming based on user connection speed
+- Basic authentication
+- Automated way to find and download song files
+- Automated way to compress audio files
+- Look into different streaming protocols like HLS, RTP, DASH, etc
+- Optimization to do least amount of work on client side as possible
 
 To run:
-
+```bash
 cd sss
 npm install
 npn run dev
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Built with React, Typescript, Vite.
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
