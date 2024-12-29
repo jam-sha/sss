@@ -8,7 +8,6 @@ Planned features:
 - Ability to queue up songs
 - Autoplay next song in queue when current song ends, remove current song from queue
 - Automatically create queue via shuffling song list or sequentially
-- Seeking for songs which is the ability to jump to any timestamp of a file through clicking/tapping a progress bar
 - Host files remotely with S3 and CloudFront
 - Buffered playback from S3/CloudFront instead of having to download entire file
 - Adaptive bitrate streaming based on user connection speed
