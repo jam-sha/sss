@@ -21,13 +21,17 @@ function App() {
   useEffect(() => {
     songs.forEach((song) => {
       const audio = new Audio(song.path);
+
       audio.addEventListener("ended", () => {
-        setPlaying(false);
+        const currindex = songs.findIndex((x) => x.path == song.path);
+        const nextsongindex = (currindex + 1) % songs.length;
+        changeSong(songs[nextsongindex].path);
       });
 
       audio.addEventListener("timeupdate", () => {
         setCurrentTime(audio.currentTime);
       });
+
       audio.addEventListener("loadedmetadata", () => {
         if (song.path === currentlyPlaying) {
           setDuration(audio.duration);
