@@ -9,9 +9,31 @@ interface SymbolProps {
 
 function App() {
   const songs = [
-    { path: "/pt.mp3", title: "Paris, Texas" },
-    { path: "/cn.mp3", title: "Candy Necklace" },
+    { path: "ldr-dykttatuob-tg.mp3", title: "The Grants" },
+    {
+      path: "ldr-dykttatuob-dykttatuob.mp3",
+      title: "Did you know that there's a tunnel under Ocean Blvd",
+    },
+    { path: "ldr-dykttatuob-s.mp3", title: "Sweet" },
+    { path: "ldr-dykttatuob-a.mp3", title: "A&W" },
+    { path: "ldr-dykttatuob-jsi.mp3", title: "Judah Smith Interlude" },
+    { path: "ldr-dykttatuob-cn.mp3", title: "Candy Necklace" },
+    { path: "ldr-dykttatuob-jbi.mp3", title: "Jon Batiste Interlude" },
+    { path: "ldr-dykttatuob-k.mp3", title: "Kintsugi" },
+    { path: "ldr-dykttatuob-(fin).mp3", title: "Fingertips" },
+    { path: "ldr-dykttatuob-pt.mp3", title: "Paris, Texas" },
+    {
+      path: "ldr-dykttatuob-gpsotsomfwhdf.mp3",
+      title:
+        "Grandfather please stand on the shoulders of my father while he's deep-sea fishing",
+    },
+    { path: "ldr-dykttatuob-ltli.mp3", title: "Let The Light In" },
+    { path: "ldr-dykttatuob-m.mp3", title: "Margaret" },
+    { path: "ldr-dykttatuob-(fis).mp3", title: "Fishtail" },
+    { path: "ldr-dykttatuob-p.mp3", title: "Peppers" },
+    { path: "ldr-dykttatuob-ttxv.mp3", title: "Taco Truck x VB" },
   ];
+
   const audioRefs = useRef<Map<string, HTMLAudioElement>>(new Map());
   const [playing, setPlaying] = useState(false);
   const [currentlyPlaying, setCurrentlyPlaying] = useState("");
@@ -42,12 +64,16 @@ function App() {
     });
   }, []);
 
-  const changeSong = (songPath: string) => {
+  const changeSong = async (songPath: string) => {
     if (currentlyPlaying === songPath) {
       const currentAudio = audioRefs.current.get(songPath);
       if (currentAudio) {
         if (!playing) {
-          currentAudio.play();
+          try {
+            await currentAudio.play();
+          } catch (err) {
+            console.log(err);
+          }
           setPlaying(true);
         } else {
           currentAudio.pause();
@@ -67,10 +93,17 @@ function App() {
         setCurrentlyPlaying(songPath);
         setCurrentTime(0);
         setDuration(newSong.duration);
-        newSong.play();
+        try {
+          await newSong.play();
+        } catch (err) {
+          console.log(err);
+        }
         setPlaying(true);
       }
     }
+    //const currindex = songs.findIndex((x) => x.path == songPath);
+    //document.title = songs[currindex].title;
+    //causes DOMException: The fetching process for the media resource was aborted by the user agent at the user's request...
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -134,7 +167,7 @@ function App() {
           </div>
         ))}
       </div>
-      <div>
+      <div className="seekcontainer">
         <span>{formatTime(currentTime)}</span>
         <input
           type="range"
